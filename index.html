@@ -97,13 +97,36 @@
                     <div class="column has-text-centered">
                         <h1 class="title is-1 publication-title"> AlignBot: Aligning VLM-powered Customized Task Planning with User Reminders Through Fine-Tuning for Household Robots</h1>
                         <h4 class="title is-4 conference-authors"><a target="_blank" href="https://2025.ieee-icra.org/"> Submitted to ICRA 2025</a></h4>
-                        <div class="is-size-5 publication-authors">
+<!--                         <div class="is-size-5 publication-authors">
                             <span class="author-block">
                                 Zhaxizhuoma, Pengan Chen, Ziniu Wu, Jiawei Sun, Dong Wang, Peng Zhou
                                 <br>
                                 Nieqing Cao, Yan Ding, Bin Zhao, Xuelong Li
                             </span>
-                        </div>
+                        </div> -->
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Zhaxizhuoma</a><sup>1</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Pengan Chen</a><sup>1,2</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Ziniu Wu</a><sup>1,3</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Jiawei Sun</a><sup>1</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Dong Wang</a><sup>1</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Peng Zhou</a><sup>2</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Nieqing Cao</a><sup>4</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Yan Ding</a><sup>1,*</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Bin Zhao</a><sup>1,5</sup>,</span>
+                            <span class="author-block">
+                              <a target="_blank" href="https://yding25.com/AlignBot/">Xuelong Li</a><sup>1, 6</sup>
+                            </span>
+                          </div>
                     <div id="hidden-content" style="display: none;">
                         <div class="column has-text-centered">
                             <div class="publication-links">
@@ -188,8 +211,6 @@
         </div>
     </section>
 
-    <!-- 隐藏Abstract之后的内容 -->
-<!--     <div id="hidden-content"> -->
 
     <!--Framework-->
     <section class="section">
@@ -201,23 +222,17 @@
                         <img src="./assets/images/alignbot-framework.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 80%;">
                         <br>
                         <span style="font-size: 110%">
-                            The fine-tuned \emph{LLaVA model} serves as an adapter for GPT-4o during inference, processing user id, task descriptions, and observations to produce cues that guide GPT-4o's task planning. These cues, combined with a dynamically retrieved <span style="font-weight: bold">task-relevant cases</span> of past successes, are incorporated into the prompt, optimizing GPT-4o's generation of action plans. If the initial output does not meet user expectations, the system enables iterative dialogue, supporting multiple rounds of feedback and refinement until a satisfactory result is achieved.
+                            The fine-tuned <span style="font-weight: bold">LLaVA model</span> serves as an adapter for GPT-4o during inference, processing user id, task descriptions, and observations to produce cues that guide GPT-4o's task planning. These cues, combined with a dynamically retrieved <span style="font-weight: bold">task-relevant cases</span> of past successes, are incorporated into the prompt, optimizing GPT-4o's generation of action plans. If the initial output does not meet user expectations, the system enables iterative dialogue, supporting multiple rounds of feedback and refinement until a satisfactory result is achieved.
                         </span>
-<!--                         <br>
-                        <span style="font-size: 110%">
-                            <sup>&#8270;</sup> The green (dashed) loop represents a plan execution process where the robot does encounter no situation, or these situations have no impact on the robot's plan execution.
-                        </span>
-                        <br>
-                        <span style="font-size: 110%">
-                            <sup>&#8270;</sup> The orange loop is activated when the robot's current (closed-world) task planner is unable to develop a plan, which activates Knowledge Acquirer to augment the task planner with additional action effects utilizing common sense.
-                        </span> -->
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
+
+
+    
     <div id="hidden-content">
         
     <!--Prompt Design-->
