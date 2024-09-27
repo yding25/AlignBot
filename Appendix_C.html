@@ -7,8 +7,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 20px auto;
             line-height: 1.6;
+            max-width: 1300px; /* Adjust this value to set your desired page width */
         }
         h1, h2, h3 {
             color: #2c3e50;
@@ -19,6 +20,10 @@
         h2 {
             border-bottom: 2px solid #2c3e50;
             padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        h3 {
+            margin-top: 30px;
         }
         code, pre {
             background-color: #f4f4f4;
@@ -45,20 +50,9 @@
         th {
             background-color: #f2f2f2;
         }
-
-        /* Hiding Appendix C3 */
-        #appendix-c1 {
-            display: none;
-        }
-        /* Hiding Appendix C3 */
-        #appendix-c2 {
-            display: none;
-        }
-        /* Hiding Appendix C3 */
-        #appendix-c3 {
-            display: none;
-        }
     </style>
+    <!-- Include MathJax for rendering LaTeX formulas -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -66,54 +60,252 @@
 
     <!-- Appendix C1 -->
     <div id="appendix-c1">
-    <h2>Appendix B1: Dataset Description</h2>
-    <p>The dataset used in this study is [Dataset Name], with the following features:</p>
-    <ul>
-        <li>Number of samples: 10,000</li>
-        <li>Image resolution: 640x480</li>
-        <li>Classes: 5 categories (Class A, Class B, Class C, Class D, Class E)</li>
-    </ul>
-    <p>More information about the dataset can be found at <a href="https://example.com/dataset">Dataset Link</a>.</p>
+        <h2>C.1. Task Details</h2>
+        <img src="./assets/images/Figure_1.png" style="width:1300px; height:auto;">
+        <table>
+            <tr>
+                <th>Task</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>put the apple in fridge</td>
+                <td>Put the apples in the fridge. If there is a bowl on the table, need to put the apples in the bowl before placing them in the fridge.</td>
+            </tr>
+            <tr>
+                <td>boil water</td>
+                <td>Fill the pot with water and boil it. Turn off the stove after completing the task.</td>
+            </tr>
+            <tr>
+                <td>cut carrot</td>
+                <td>Cut carrots on cutting board.</td>
+            </tr>
+            <tr>
+                <td>heat the pot</td>
+                <td>Heat a pot on the stove. Turn off the stove after completing the task.</td>
+            </tr>
+            <tr>
+                <td>heat the potato</td>
+                <td>Microwave potatoes. If there is a bowl on the table, need to put the potatoes in the bowl before placing them in the Microwave.</td>
+            </tr>
+            <tr>
+                <td>put the apple in bowl</td>
+                <td>Put the apples on the table into the bowl.</td>
+            </tr>
+            <tr>
+                <td>put all the fruits in the bowl</td>
+                <td>Put the fruits on the table into the bowl.</td>
+            </tr>
+            <tr>
+                <td>put pear in the Drawer</td>
+                <td>Put the pears into the white drawer.</td>
+            </tr>
+            <tr>
+                <td>Saute carrot slices</td>
+                <td>Cut carrots on cutting board. Then fry the carrot slices in the pan.</td>
+            </tr>
+            <tr>
+                <td>Organize items</td>
+                <td>Place items on the counter at designated locations.</td>
+            </tr>
+            <tr>
+                <td>put things in drawer</td>
+                <td>Place items on the counter at designated drawer.</td>
+            </tr>
+            <tr>
+                <td>give me something to drink</td>
+                <td>According to the user's preferences, get the user's favorite drinks.</td>
+            </tr>
+            <tr>
+                <td>give me some snacks</td>
+                <td>According to the user's preferences, get the user's favorite snacks.</td>
+            </tr>
+            <tr>
+                <td>give me my cup</td>
+                <td>According to the user's preferences, get the user's favorite cups.</td>
+            </tr>
+            <tr>
+                <td>give me salt</td>
+                <td>Give the user the container with salt.</td>
+            </tr>
+            <tr>
+                <td>give me sugar</td>
+                <td>Give the user the container with sugar.</td>
+            </tr>
+            <tr>
+                <td>give me vinegar</td>
+                <td>Give the user the bottle with vinegar.</td>
+            </tr>
+            <tr>
+                <td>give me soy sauce</td>
+                <td>Give the user the bottle with soy sauce.</td>
+            </tr>
+            <tr>
+                <td>Organize the table</td>
+                <td>Put items on the table onto the shelves.</td>
+            </tr>
+            <tr>
+                <td>put things in box</td>
+                <td>Put items on the floor into designated boxes.</td>
+            </tr>
+        </table>
     </div>
 
-    
     <!-- Appendix C2 -->
     <div id="appendix-c2">
-    <h2>Appendix B2: Algorithm Pseudocode</h2>
-    <p>Below is the pseudocode for the proposed algorithm [Algorithm Name]:</p>
-    <pre><code>
-Algorithm Name(Input: Data D, Parameters θ)
-1: Initialize parameters θ
-2: repeat
-3:   Compute loss function L(D, θ)
-4:   Update parameters θ using gradient descent
-5: until Convergence
-6: Return final parameters θ
-    </code></pre>
+        <h2>C.2. Human Rater Evaluation Criteria</h2>
+        <table>
+            <tr>
+                <th>Points</th>
+                <th>Rating Guidelines</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>Cues are so irrelevant to the scene that it has no corrective effect at all.</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Although there are some errors, cues contain partially correct item status reminders, personalized reminders, or planning step reminders.</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>There are no errors, but cues only contain partially correct item status reminders, personalized reminders or planning step reminders.</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Cues accurately include item status reminders, personalized reminders and planning step reminders.</td>
+            </tr>
+        </table>
     </div>
 
     <!-- Appendix C3 -->
     <div id="appendix-c3">
-        <h2>Appendix B3: Experimental Results</h2>
-        <p>The following table summarizes the experimental results obtained in this study:</p>
+        <h2>C.3. Detailed Experimental Results</h2>
+
+        <h3>Table 1</h3>
         <table>
             <tr>
-                <th>Experiment</th>
-                <th>Accuracy</th>
-                <th>Recall</th>
-                <th>F1 Score</th>
+                <th>Method</th>
+                <th>put apple in fridge</th>
+                <th>boil water</th>
+                <th>cut carrot</th>
+                <th>heat pot</th>
+                <th>heat potato</th>
+                <th>put apple in bowl</th>
+                <th>put fruits in bowl</th>
+                <th>put pear in Drawer</th>
+                <th>Saute carrot slices</th>
             </tr>
             <tr>
-                <td>Experiment 1</td>   
-                <td>90%</td>
-                <td>88%</td>
-                <td>89%</td>
+                <td>GPT4o only</td>
+                <td>0%</td>
+                <td>13.3%</td>
+                <td>36.7%</td>
+                <td>46.7%</td>
+                <td>3.3%</td>
+                <td>40%</td>
+                <td>56.7%</td>
+                <td>0%</td>
+                <td>6.7%</td>
             </tr>
             <tr>
-                <td>Experiment 2</td>
-                <td>92%</td>
+                <td>GPT4o with memory base</td>
+                <td>33.3%</td>
+                <td>26.7%</td>
+                <td>40%</td>
+                <td>16.7%</td>
+                <td>13.3%</td>
+                <td>36.7%</td>
+                <td>46.7%</td>
+                <td>6.7%</td>
+                <td>13.3%</td>
+            </tr>
+            <tr>
+                <td>LLaMA2-7b with GPT4o</td>
+                <td>13.3%</td>
+                <td>13.3%</td>
+                <td>3.3%</td>
+                <td>3.3%</td>
+                <td>10%</td>
+                <td>40%</td>
+                <td>6.7%</td>
+                <td>20%</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+                <td>AlignBot</td>
                 <td>90%</td>
-                <td>91%</td>
+                <td>83.3%</td>
+                <td>96.7%</td>
+                <td>96.7%</td>
+                <td>80%</td>
+                <td>93.3%</td>
+                <td>73.3%</td>
+                <td>93.3%</td>
+                <td>56.7%</td>
+            </tr>
+        </table>
+
+        <h3>Table 2</h3>
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Organize items</th>
+                <th>put things in drawer</th>
+                <th>give something to drink</th>
+                <th>give snacks</th>
+                <th>give cup</th>
+                <th>give sugar</th>
+                <th>give vinegar</th>
+                <th>Organize table</th>
+                <th>put things in box</th>
+            </tr>
+            <tr>
+                <td>GPT4o only</td>
+                <td>0%</td>
+                <td>0%</td>
+                <td>30%</td>
+                <td>33.3%</td>
+                <td>30%</td>
+                <td>3.3%</td>
+                <td>20%</td>
+                <td>0%</td>
+                <td>0%</td>
+            </tr>
+            <tr>
+                <td>GPT4o with memory base</td>
+                <td>10%</td>
+                <td>3.3%</td>
+                <td>40%</td>
+                <td>36.7%</td>
+                <td>43.4%</td>
+                <td>80%</td>
+                <td>83.3%</td>
+                <td>40%</td>
+                <td>26.7%</td>
+            </tr>
+            <tr>
+                <td>LLaMA2-7b with GPT4o</td>
+                <td>3.3%</td>
+                <td>6.7%</td>
+                <td>56.7%</td>
+                <td>40%</td>
+                <td>96.7%</td>
+                <td>96.7%</td>
+                <td>93.3%</td>
+                <td>43.4%</td>
+                <td>80%</td>
+            </tr>
+            <tr>
+                <td>AlignBot</td>
+                <td>70%</td>
+                <td>76.7%</td>
+                <td>96.7%</td>
+                <td>90%</td>
+                <td>96.7%</td>
+                <td>96.7%</td>
+                <td>96.7%</td>
+                <td>86.7%</td>
+                <td>93.3%</td>
             </tr>
         </table>
     </div>

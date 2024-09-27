@@ -7,8 +7,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 20px auto;
             line-height: 1.6;
+            max-width: 1300px; /* Adjust this value to set your desired page width */
         }
         h1, h2, h3 {
             color: #2c3e50;
@@ -19,6 +20,10 @@
         h2 {
             border-bottom: 2px solid #2c3e50;
             padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        h3 {
+            margin-top: 30px;
         }
         code, pre {
             background-color: #f4f4f4;
@@ -45,77 +50,287 @@
         th {
             background-color: #f2f2f2;
         }
-
-        /* Hiding Appendix B3 */
-        #appendix-b1 {
-            display: none;
-        }
-        /* Hiding Appendix B3 */
-        #appendix-b2 {
-            display: none;
-        }
-        /* Hiding Appendix B3 */
-        #appendix-b3 {
-            display: none;
-        }
     </style>
+    <!-- Include MathJax for rendering LaTeX formulas -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
-    <h1>Appendix B - AlignBot</h1>
+    <h1>Appendix B - Method</h1>
 
     <!-- Appendix B1 -->
     <div id="appendix-b1">
-    <h2>Appendix B1: Dataset Description</h2>
-    <p>The dataset used in this study is [Dataset Name], with the following features:</p>
-    <ul>
-        <li>Number of samples: 10,000</li>
-        <li>Image resolution: 640x480</li>
-        <li>Classes: 5 categories (Class A, Class B, Class C, Class D, Class E)</li>
-    </ul>
-    <p>More information about the dataset can be found at <a href="https://example.com/dataset">Dataset Link</a>.</p>
+        <h2>B.1. Fine-Tuning Settings</h2>
+        <p>To ensure that Instruction-LLaVA effectively interprets visual and contextual information, the model was fine-tuned using the Low-Rank Adaptation (LoRA) method. We fine-tuned the LLaVA1.5-7B-Chat model with the following key hyperparameters:</p>
+
+        <ul>
+            <li><strong>Data Volume:</strong> 100 samples for one task.</li>
+            <li><strong>Backbone Model:</strong> LLaVA 1.5-7B-Chat.</li>
+            <li><strong>Learning Rate:</strong> 5e-5.</li>
+            <li><strong>Epochs:</strong> 40 epochs.</li>
+            <li><strong>Gradient Normalization:</strong> 1.0.</li>
+            <li><strong>Data Type:</strong> BF16.</li>
+            <li><strong>Max Input Length:</strong> 1024 tokens.</li>
+            <li><strong>Batch Size:</strong> A batch size of 8, with gradient accumulation set to 4, resulting in an effective batch size of 32 for each weight update.</li>
+            <li><strong>Learning Rate Scheduler:</strong> Cosine learning rate scheduler.</li>
+            <li><strong>LoRA Rank:</strong> 32.</li>
+            <li><strong>LoRA Alpha:</strong> 64.</li>
+            <li><strong>LoRA Dropout:</strong> 0.05.</li>
+            <li><strong>LoRA Modules:</strong> All linear layers.</li>
+        </ul>
+
+        <p>The training was conducted using the PEFT framework, which facilitated the efficient fine-tuning of the LLaVA model for the specific requirements of the AlignBot system.</p>
     </div>
 
-    
     <!-- Appendix B2 -->
     <div id="appendix-b2">
-    <h2>Appendix B2: Algorithm Pseudocode</h2>
-    <p>Below is the pseudocode for the proposed algorithm [Algorithm Name]:</p>
-    <pre><code>
-Algorithm Name(Input: Data D, Parameters θ)
-1: Initialize parameters θ
-2: repeat
-3:   Compute loss function L(D, θ)
-4:   Update parameters θ using gradient descent
-5: until Convergence
-6: Return final parameters θ
-    </code></pre>
+        <h2>B.2. Algorithm for Case-Based Learning</h2>
+
+        <h3>B.2.1. Case-Based Learning for Enhanced GPT Prompting</h3>
+        <p>Long-horizon task planning in household robotics often faces challenges such as action omissions and sequence errors, which can undermine execution reliability. For instance, a robot might attempt to place an object without first grasping it. To address these issues, we propose a <strong>case-based learning</strong> approach that enhances GPT-4<sub>o</sub>'s planning capabilities by incorporating relevant historical cases into the prompting process.</p>
+
+        <p>This method involves dynamically retrieving the top-\( k \) most relevant cases—specifically, past action plans that were both successful and approved by users—from historical dialogue data. The retrieved cases serve as reference examples for GPT-4<sub>o</sub>, providing contextual guidance based on prior successful executions. By leveraging similar and correct action sequences from past cases, we aim to improve the accuracy and robustness of the generated plans.</p>
+
+        <p>The rationale behind this approach is that previous successful plans encapsulate effective solutions that can help prevent common errors in new tasks. However, retrieving relevant cases in a multimodal context poses challenges due to the complexity of assessing similarity across different modalities. To overcome this, we first select successful plans that match the same task description. We then utilize GPT-4<sub>o</sub>'s feedback to evaluate and rank these plans based on their relevance and effectiveness. By dynamically integrating the most appropriate cases as references, GPT-4<sub>o</sub> can generate more accurate and comprehensive action sequences, thereby reducing omissions and enhancing overall task execution.</p>
+
+        <h3>B.2.2. Algorithm Description</h3>
+        <p>Consider a dataset \( D = \{ \langle p_1, t_1 \rangle, \langle p_2, t_2 \rangle, \dots, \langle p_n, t_n \rangle \} \), where each action plan \( p_i \) is linked to a historical task description \( t_i \). Each plan \( p_i \) is assigned an initial priority score \( f_i = f_0 \) and a gradient \( \Delta f_i = 0 \).</p>
+
+        <p>When a new task \( t_{\text{new}} \) arrives, the system performs the following steps:</p>
+
+        <ol>
+            <li><strong>Instance Selection:</strong>
+                <ol type="a">
+                    <li>Compute the similarity \( \text{sim}(t_i, t_{\text{new}}) \) for each instance \( p_i \in D \) using TF-IDF combined with cosine similarity.</li>
+                    <li>Select a subset \( D_r' \) such that:
+                        \[ D_r' = \{ p_i \mid \text{sim}(t_i, t_{\text{new}}) > \tau \} \]
+                        where \( \tau \) is a predefined similarity threshold.</li>
+                </ol>
+            </li>
+            <li><strong>Priority Normalization:</strong>
+                <ol type="a">
+                    <li>Apply Softmax Function:
+                        <ul>
+                            <li>Normalize the priority scores of instances in \( D' \) to prevent over-reliance on a limited set of action plans:
+                                \[ f_i = \frac{\exp(f_i)}{\sum_{p_j \in D'} \exp(f_j)}, \quad \forall p_i \in D' \]
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+            <li><strong>Action Plan Selection (\( \epsilon \)-Greedy Strategy):</strong>
+                <ol type="a">
+                    <li>Implement an \( \epsilon \)-Greedy strategy to balance exploration and exploitation:
+                        \[ p_{\text{selected}} = \begin{cases} \text{Randomly select } k \text{ instances from } D_r', & \text{with probability } \epsilon \\ \text{Select top-}k \text{ instances from } D_r' \text{ based on } f_i, & \text{with probability } 1 - \epsilon \end{cases} \]
+                        where \( \epsilon \) is the exploration rate.
+                    </li>
+                </ol>
+            </li>
+            <li><strong>Priority and Gradient Update:</strong>
+                <ol type="a">
+                    <li>For each selected instance \( p_i \), update the gradient and priority based on the utility of the action plan:
+                        <ul>
+                            <li>If \( p_i \) was useful (effective):
+                                \[ \Delta f_i = \Delta f_{\text{positive}}^0 \cdot \exp(-\alpha \cdot n_i) \]
+                            </li>
+                            <li>If \( p_i \) was not useful (ineffective):
+                                \[ \Delta f_i = -\Delta f_{\text{negative}}^0 \cdot \exp(-\beta \cdot n_i) \]
+                            </li>
+                        </ul>
+                        where \( n_i \) is the usage count of \( p_i \), \( \alpha \) and \( \beta \) are decay parameters, and \( \Delta f_{\text{positive}}^0 \) and \( \Delta f_{\text{negative}}^0 \) are initial adjustment values.
+
+                        <p>Update the priority score:
+                        \[ f_i = \min(\max(f_i + \Delta f_i, f_{\text{min}}), f_{\text{max}}) \]
+                        where \( f_{\text{min}} \) and \( f_{\text{max}} \) are the minimum and maximum allowable priority scores.</p>
+                    </li>
+                </ol>
+            </li>
+            <li><strong>Iterative Improvement:</strong>
+                Repeat the above steps for subsequent tasks, continuously refining the priority scores and improving the system's planning capabilities over time.
+            </li>
+        </ol>
+
+        <h3>B.2.4. Parameter Settings</h3>
+        <p>The key parameters used in the algorithm are set as follows:</p>
+        <ul>
+            <li><strong>Initial Priority Score (\( f_0 \)):</strong> 0.5</li>
+            <li><strong>Minimum Priority Score (\( f_{\text{min}} \)):</strong> 0.1</li>
+            <li><strong>Maximum Priority Score (\( f_{\text{max}} \)):</strong> 1.0</li>
+            <li><strong>Decay Parameters:</strong>
+                <ul>
+                    <li>Positive Feedback Decay (\( \alpha \)): 0.1</li>
+                    <li>Negative Feedback Decay (\( \beta \)): 0.1</li>
+                </ul>
+            </li>
+            <li><strong>Initial Adjustment Values:</strong>
+                <ul>
+                    <li>Positive Adjustment (\( \Delta f_{\text{positive}}^0 \)) : 0.05</li>
+                    <li>Negative Adjustment (\( \Delta f_{\text{negative}}^0 \)) : 0.05</li>
+                </ul>
+            </li>
+            <li><strong>Similarity Threshold (\( \tau \)):</strong> 0.5</li>
+            <li><strong>Exploration Rate (\( \epsilon \)):</strong> 0.2</li>
+            <li><strong>Number of Action Plans to Select (\( k \)):</strong> 5</li>
+        </ul>
+
+        <p>These parameters balance the exploration and exploitation trade-off, ensuring adaptability without over-reliance on a narrow set of strategies. The decay parameters \( \alpha \) and \( \beta \) control how quickly the impact of feedback diminishes with repeated use, preventing unbounded growth or decay of priority scores over time.</p>
+
+        <h3>B.2.5. Continuous Improvement through Iterative Feedback</h3>
+        <p>By iteratively applying this algorithm across multiple tasks, the system refines its action planning capabilities. Initially, when all action plans have identical priority scores, the selection is more random. As tasks are executed and feedback is incorporated, the priority scores are updated to reflect the effectiveness of each action plan. Over time, this leads to a hierarchy among the action plans, allowing the system to prioritize the most effective strategies.</p>
+
+        <p>This approach not only enhances the system's planning capabilities but also adapts to user preferences and the specific context of each task. By continuously updating the priority scores and incorporating a balance of exploration and exploitation, the AdaBot model achieves a higher degree of flexibility and precision in its operations.</p>
     </div>
 
     <!-- Appendix B3 -->
     <div id="appendix-b3">
-        <h2>Appendix B3: Experimental Results</h2>
-        <p>The following table summarizes the experimental results obtained in this study:</p>
-        <table>
-            <tr>
-                <th>Experiment</th>
-                <th>Accuracy</th>
-                <th>Recall</th>
-                <th>F1 Score</th>
-            </tr>
-            <tr>
-                <td>Experiment 1</td>   
-                <td>90%</td>
-                <td>88%</td>
-                <td>89%</td>
-            </tr>
-            <tr>
-                <td>Experiment 2</td>
-                <td>92%</td>
-                <td>90%</td>
-                <td>91%</td>
-            </tr>
-        </table>
+        <h2>B.3. Deployment Details for XArm and ACT</h2>
+
+        <h3>XArm</h3>
+        <p>In all our real-world manipulation experiments, we utilize a UFactory XArm 6 robot, a flexible manipulator with six degrees of freedom. The arm has a reach of 700 mm, a payload capacity of 5 kg, a repeatability of ±0.1 mm, and a maximum speed of 1000 mm/s. It supports various motion control modes, including joint position and velocity control, which are easily integrated into our system. The XArm gripper is equipped with modified UMI compliant fingers. Although the arm is mounted on a mobile base for scene adaptability, we consider it a fixed-base manipulator rather than a mobile robot. The robot is controlled using the <code>xArm-Python-SDK</code>.</p>
+
+        <p>The system is outfitted with two Intel RealSense D435i cameras: one positioned on the wrist and the other on the shoulder of the robot. We use the pyrealsense2 library for communication with the cameras. The cameras capture two RGB images at a resolution of 640×480 pixels with a frame rate of 60 Hz.</p>
+
+        <p>To manage the integration of all components, we use Python's threading module. Neural networks are implemented and trained using PyTorch.</p>
+
+        <h3>ACT</h3>
+        <p>The Action Chunking with Transformers (ACT) algorithm is based on a transformer network architecture that integrates a conditional variational autoencoder (CVAE) with a transformer sequence model. This structure is specifically designed to tackle the complexities associated with fine-grained manipulation tasks.</p>
+
+        <p>The encoder compresses the action sequences and joint observations into a latent space, represented by a style variable that captures the variability of human demonstrations. This style variable is essential for modeling the stochastic nature of human actions, allowing the system to generate diverse but accurate action sequences during inference. The decoder, which acts as the policy, uses current observations—such as RGB images from both the shoulder and hand perspectives, joint positions, and the style variable—to predict the sequence of actions.</p>
+
+        <p>The transformer architecture is central to ACT’s functionality, with a transformer encoder integrating information across the observation sequence, while a transformer decoder produces the action sequence. The ability of transformers to model implicit representations within sequences makes them ideal for the action chunking strategy, where actions are predicted in segments rather than on a step-by-step basis.</p>
+    </div>
+
+    <!-- Appendix B4 -->
+    <div id="appendix-b4">
+        <h2>B.4. Prompt</h2>
+        <p><strong>ChatGPT Prompt:</strong></p>
+        <pre>
+            You are controlling a one-armed robot.
+
+            **Task Objective:**
+            Your task is to complete the following goal:
+            {goal}
+
+            **Current Environment:**
+            Please analyze the image carefully, ensuring that all objects, particularly those relevant to the goal, are identified and accounted for.
+
+            **Past Success Example:**
+            Here are some past success examples for the current goal:
+            {Successes}
+
+            **Reminders:**
+            You need to pay careful attention to the following reminders from user {username}:
+            {Reminders}
+
+            **Available Actions:**
+            Here are all the actions you can use to achieve the goal:
+            - **turnright**: Rotate the robotic arm to the right.
+            - **turnleft**: Rotate the robotic arm to the left.
+            - **walkforward**: Advance the robotic arm forward.
+            - **walktowards &lt;obj&gt;**: Move the robotic arm towards the specified object.
+            - **grab &lt;obj&gt;**: Grasp the specified object. Release any held item before grabbing a new one.
+            - **switchon &lt;obj&gt;**: Activate the specified object.
+            - **switchoff &lt;obj&gt;**: Deactivate the specified object.
+            - **open &lt;obj&gt;**: Open the specified object.
+            - **close &lt;obj&gt;**: Close the specified object.
+            - **lookat &lt;obj&gt;**: Focus on the specified object.
+            - **find &lt;obj&gt;**: Locate the specified object.
+            - **turnto &lt;obj&gt;**: Orient towards the specified object.
+            - **pointat &lt;obj&gt;**: Point to the specified object.
+            - **putin &lt;obj1&gt; &lt;obj2&gt;**: Place the first object into the second.
+            - **puton &lt;obj1&gt; &lt;obj2&gt;**: Place the first object on top of the second.
+            - **putback &lt;obj1&gt; &lt;obj2&gt;**: Return the first object into the second.
+            - **push &lt;obj&gt;**: Push the specified object.
+            - **pull &lt;obj&gt;**: Pull the specified object.
+            - **rotate &lt;obj&gt;**: Rotate the specified object.
+            - **tilt &lt;obj&gt;**: Tilt the specified object.
+            - **cut &lt;obj&gt;**: Cut the specified object.
+            - **flip &lt;obj&gt;**: Flip the specified object.
+            - **wait &lt;n&gt;**: Pause for n minutes.
+            - **done**: Signal task completion.
+
+            **Output Structure:**
+            - Formulate a step-by-step action plan using only the actions listed above.
+            - Each step should adhere to the following syntax:
+                '''
+                [action] ("object1", (optional: "object2"))
+                '''
+            - Conclude the plan with the **done()** action.
+            - In the action plan, briefly describe the color or shape of the object.
+
+            **Example:**
+            For the goal "Put the fork into the cup":
+                '''
+                def Put_the_fork_into_the_cup():
+                    find ("grey fork")
+                    walktowards ("grey fork")
+                    grab ("grey fork")
+                    find ("red cup")
+                    walktowards ("red cup")
+                    putin ("grey fork", "red cup")
+                    done()
+                '''
+        </pre>
+
+        <p><strong>LLaVA-7B Prompt:</strong></p>
+        <pre>
+            {username} wants robot to {goal}. If you were {username}, what reminders would you give to the robot?
+        </pre>
+
+        <p><strong>If want to try a larger LLaVA model, please try prompt:</strong></p>
+        <pre>
+            {username} wants robot to {goal}. If you were {username}, what reminders would you give to the robot?
+                        
+            Follow these guidelines:
+
+            1. **Personalized Reminders:**
+                - Generate reminders based on user
+                - Include user preferences and specific rules for item placement.
+                - Mention any habitual actions the user typically follows.
+
+            2. **Scene Reminders:**
+                - Generate reminders based on picture and goal
+                - Describe all items visible in the image, including their status, position, and any notable details.
+                - Reference any past successful scenarios or considerations similar to the current scene.
+
+            3. **Step-by-Step Action Reminders:**
+                - Generate reminders based on picture and goal
+                - Provide a detailed, step-by-step reminder for each action, ensuring clarity and precision.
+                - Consider the robot’s single-arm constraint: remind that only one action can be performed at a time.
+                - Include any specific instructions related to the current scene and the user's preferences.
+
+            **Output Structure:**
+            1. **User Preferences:**
+                - [Include relevant personalized information based on the user’s habits or rules.]
+
+            2. **Scene Description:**
+                - [Provide a detailed description of the items and their status in the image.]
+
+            3. **Step-by-Step Action Reminders:**
+                - Reminder 1: [Detailed reminder for the first action, considering robot’s single-arm constraint.]
+                - Reminder 2: [Next detailed reminder.]
+                - ...
+                - Final Reminder: [Final detailed reminder, ensuring all tasks are completed according to the user’s preferences and scene specifics.]
+
+            **Few-Shot Examples:**
+
+            Example 1:
+            - Carefully identify the objects on the table in the picture and put them into the drawers. 
+            - Put drinks in drawer 1. 
+            - Put kitchen utensils in drawer 3. The kitchen utensils in the picture are a white tray and a kitchen knife. Put them in drawer 3.
+            - The yellow item is actually a tea beverage. You should open drawer 1 before grabbing things.
+
+            Example 2:
+            - Put snacks in drawer 2 and kitchen utensils in drawer 3.
+            - The kitchen utensils in the picture are a cutting board and a fruit knife.
+            - The pink fruit knife is on the cutting board. Put them into drawer 3. You should open drawer 3 before grabbing things.
+
+            Example 3:
+            - Put drinks in drawer 1.
+            - Drawer 1 is already open. You do not need to open it again. Close drawer 1 at the end.
+
+            Ensure each reminder is clear, follows the constraints, and aligns with the user's preferences and the scene description.
+        </pre>
     </div>
 
 </body>
