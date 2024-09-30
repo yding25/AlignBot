@@ -7,10 +7,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 20px auto;
             line-height: 1.6;
+            max-width: 1300px; /* Adjust this value to set your desired page width */
         }
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             color: #2c3e50;
         }
         h1 {
@@ -19,6 +20,10 @@
         h2 {
             border-bottom: 2px solid #2c3e50;
             padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        h3 {
+            margin-top: 30px;
         }
         code, pre {
             background-color: #f4f4f4;
@@ -45,78 +50,203 @@
         th {
             background-color: #f2f2f2;
         }
-
-        /* Hiding Appendix A3 */
-        #appendix-a1 {
-            display: none;
-        }
-        /* Hiding Appendix A3 */
-        #appendix-a2 {
-            display: none;
-        }
-        /* Hiding Appendix A3 */
-        #appendix-a3 {
-            display: none;
+        img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
+    <!-- Include MathJax for rendering LaTeX formulas -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
-    <h1>Appendix A - AlignBot</h1>
+    <h1>Appendix A - Dataset</h1>
 
-    <!-- Appendix A1 -->
+    <!-- A.1 Dataset Scenes and Objects -->
     <div id="appendix-a1">
-    <h2>Appendix A1: Dataset Description</h2>
-    <p>The dataset used in this study is [Dataset Name], with the following features:</p>
-    <ul>
-        <li>Number of samples: 10,000</li>
-        <li>Image resolution: 640x480</li>
-        <li>Classes: 5 categories (Class A, Class B, Class C, Class D, Class E)</li>
-    </ul>
-    <p>More information about the dataset can be found at <a href="https://example.com/dataset">Dataset Link</a>.</p>
+        <h2>Appendix A.1: Dataset Scenes and Objects</h2>
+        <p>The dataset encompasses three primary scenes: kitchen, living room, and tabletop settings.</p>
+        <div style="display: flex; justify-content: space-between;">
+            <figure style="text-align: center;">
+                <img src="./assets/images/2.png" alt="1" style="width: 400px; height: 230px;">
+                <figcaption>Kitchen</figcaption>
+            </figure>
+            <figure style="text-align: center;">
+                <img src="./assets/images/8.png" alt="2" style="width: 400px; height: 230px;">
+                <figcaption>Living Room</figcaption>
+            </figure>
+            <figure style="text-align: center;">
+                <img src="./assets/images/7.png" alt="3" style="width: 400px; height: 230px;">
+                <figcaption>Tabletop Settings</figcaption>
+            </figure>
+        </div>
+        <p>It includes a variety of common household items, such as kitchen utensils, daily necessities, fruits and vegetables, drinks and snacks, stationery, books, clothing and toys.</p>
+        <div>
+            <img src="./assets/images/1" alt="Objects in the dataset">
+        </div>
     </div>
 
+<!-- A.2 Dataset Samples -->
+<div id="appendix-a2">
+    <h2>A.2 Dataset Samples</h2>
 
-    <!-- Appendix A2 -->
-    <div id="appendix-a2">
-    <h2>Appendix A2: Algorithm Pseudocode</h2>
-    <p>Below is the pseudocode for the proposed algorithm [Algorithm Name]:</p>
-    <pre><code>
-Algorithm Name(Input: Data D, Parameters θ)
-1: Initialize parameters θ
-2: repeat
-3:   Compute loss function L(D, θ)
-4:   Update parameters θ using gradient descent
-5: until Convergence
-6: Return final parameters θ
-    </code></pre>
-    </div>
-
-    <!-- Appendix A3 - Hidden -->
-    <div id="appendix-a3">
-        <h2>Appendix A3: Experimental Results</h2>
-        <p>The following table summarizes the experimental results obtained in this study:</p>
+    <!-- Semantic Grounding Dataset -->
+    <div class="semantic-grounding-dataset">
+        <h3>Semantic Grounding Dataset</h3>
         <table>
+            <!-- Define column widths -->
+            <colgroup>
+                <col style="width: 60%;">
+                <col style="width: 40%;">
+            </colgroup>
             <tr>
-                <th>Experiment</th>
-                <th>Accuracy</th>
-                <th>Recall</th>
-                <th>F1 Score</th>
+                <th>Messages</th>
+                <th>Image</th>
             </tr>
+            <!-- First Sample -->
             <tr>
-                <td>Experiment 1</td>
-                <td>90%</td>
-                <td>88%</td>
-                <td>89%</td>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> What is the state of the cutting board?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> The brown cutting board stands next to the wall.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/GOPR1478.JPG" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
             </tr>
+            <!-- Second Sample -->
             <tr>
-                <td>Experiment 2</td>
-                <td>92%</td>
-                <td>90%</td>
-                <td>91%</td>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> What is the state of the cutting board?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> The brown cutting board is on the counter.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/GOPR1476.JPG" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <!-- Define column widths -->
+            <colgroup>
+                <col style="width: 60%;">
+                <col style="width: 40%;">
+            </colgroup>
+            <tr>
+                <th>Messages</th>
+                <th>Image</th>
+            </tr>
+            <!-- Third Sample -->
+            <tr>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> Where is pitaya in the image?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> In the image, pitaya is on the counter.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/GOPR1508.JPG" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
+            </tr>
+            <!-- Fourth Sample -->
+            <tr>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> Where is pitaya in the image?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> In the image, pitaya is on the fridge.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/GOPR1509.JPG" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
             </tr>
         </table>
     </div>
+
+    <!-- Cue Generation Dataset -->
+    <div class="cue-generation-dataset">
+        <h3>Cue Generation Dataset</h3>
+        <table>
+            <!-- Define column widths -->
+            <colgroup>
+                <col style="width: 60%;">
+                <col style="width: 40%;">
+            </colgroup>
+            <tr>
+                <th>Messages</th>
+                <th>Image</th>
+            </tr>
+            <!-- Fifth Sample -->
+            <tr>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> Lisa wants the robot to organize items. If you were Lisa, what reminders would you give to the robot?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> Put all vegetables in the fridge. The fridge is already open. Close the fridge after putting items inside. Put the pot in the sink.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/w3_Organizeitems11.png" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
+            </tr>
+            <!-- Sixth Sample -->
+            <tr>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> Zak wants the robot to sauté carrot slices. If you were Zak, what reminders would you give to the robot?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> The brown cutting board stands next to the wall. You need to lay it flat on the table first. You need to find and grab a knife before cutting. You should put the knife on the counter after cutting. The pan is already on the stove. Grab the carrot slices before putting them in the pan.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/t7_sauteeCarrot5.JPG" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
+            </tr>
+            <!-- Seventh Sample -->
+            <tr>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> Lisa wants the robot to organize the table. If you were Lisa, what reminders would you give to the robot?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> Put the stationery on the first shelf. Place stationery into the pen holder before arranging them. Put documents and books on the second shelf.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/w3_Organiztable54.png" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
+            </tr>
+            <!-- Eighth Sample -->
+            <tr>
+                <td>
+                    <div class="message user">
+                        <strong>User:</strong> Zak wants the robot to put things in boxes. If you were Zak, what reminders would you give to the robot?
+                    </div>
+                    <div class="message assistant">
+                        <strong>Assistant:</strong> Put the toys in the blue box. Place the light-colored clothes in the transparent box. Put the dark clothes in the white box.
+                    </div>
+                </td>
+                <td>
+                    <img src="./assets/images/w3_putbox24.png" alt="Sample Image" style="width: 100%; height: auto;">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 
 </body>
 </html>
